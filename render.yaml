@@ -1,0 +1,10 @@
+services:
+  - name: streamlit-calculator
+    type: web
+    runtime: python
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app/calculator.py --server.port $PORT --server.headless true
+    plan: free
