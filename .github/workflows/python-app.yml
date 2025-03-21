@@ -46,12 +46,16 @@ jobs:
         curl -fsSL https://railway.app/install.sh | sh
         echo "$HOME/.railway/bin" >> $GITHUB_PATH
 
-    - name: Authenticate Railway
+    - name: Authenticate with Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
       run: |
-        echo "$RAILWAY_TOKEN" | railway login --ci
+        echo "$RAILWAY_TOKEN" | railway auth login
+
+    - name: Link to Railway Project
+      run: |
+        railway link --service streamlit-calculator
 
     - name: Deploy to Railway
       run: |
-        railway up --service streamlit-calculator --ci
+        railway up --service streamlit-calculator
