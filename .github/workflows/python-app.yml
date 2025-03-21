@@ -33,7 +33,7 @@ jobs:
         pytest tests/
 
   deploy:
-    name: Deploy to Hostinger VM
+    name: Deploy to Railway
     needs: build
     runs-on: ubuntu-latest
     
@@ -41,34 +41,8 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Set Up SSH Key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-
-    - name: Deploy Application
-      run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-        # Stop any running Streamlit process
-        pkill -f "streamlit" || true
-        
-        # Create app directory if not exists
-        mkdir -p ~/app
-
-        # Navigate to app directory
-        cd ~/app
-
-        # Remove existing files
-        rm -rf *
-
-        # Pull the latest code from GitHub
-        git clone https://github.com/HaRiSh337D/streamlit-calculator.git .
-
-        # Install dependencies
-        pip3 install --user -r requirements.txt
-        
-        # Run the Streamlit application
-        nohup streamlit run app/calculator.py --server.port 8501 --server.headless true &
-        EOF
+    - name: Deploy to Railway
+      uses: railwayapp/github-action@v2
+      with:
+        service-name: "streamlit-calculator"
+        token: ${{ secrets.RAILWAY_API_KEY }}
