@@ -1,8 +1,5 @@
 # tests/test_calculator.py
 
-import pytest
-from app.calculator import *
-
 def test_addition():
     assert 5 + 3 == 8
 

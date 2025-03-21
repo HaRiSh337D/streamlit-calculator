@@ -1,0 +1,33 @@
+name: CI/CD Pipeline for Streamlit Calculator
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set Up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Linter (flake8)
+      run: |
+        flake8 app/calculator.py
+
+    - name: Run Tests with pytest
+      run: |
+        pytest tests/
