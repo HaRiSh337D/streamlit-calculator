@@ -41,8 +41,12 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Install Railway CLI
+      run: |
+        curl -fsSL https://railway.app/install.sh | sh
+
     - name: Deploy to Railway
-      uses: railwayapp/github-action@v2
-      with:
-        service-name: "streamlit-calculator"
-        token: ${{ secrets.RAILWAY_API_KEY }}
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}
+      run: |
+        railway up --service streamlit-calculator --token $RAILWAY_TOKEN
