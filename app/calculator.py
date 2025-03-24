@@ -3,7 +3,7 @@
 import streamlit as st
 
 # Calculator Title
-st.title("Calculator App")
+st.title("Streamlit Calculator")
 
 # Input numbers
 num1 = st.number_input("Enter first number", value=0.0)
